@@ -1,0 +1,1108 @@
+export const STANDALONE_HTML_CODE = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbería Milo | Reserva tu Hora</title>
+  <meta name="description" content="Sitio oficial de Barbería Milo. Reserva tu corte clásico, degradado, perfilado de barba o diseño con Milo vía WhatsApp (+56977560843).">
+
+  <!-- Google Fonts: Bebas Neue para títulos y Poppins para textos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       VARIABLES Y ESTILOS GLOBALES - TEMA OSCURO & ACENTO DORADO
+       ========================================================== */
+    :root {
+      --bg-main: #0b0b0e;
+      --bg-card: #121217;
+      --bg-input: #18181f;
+      --gold-primary: #f59e0b;
+      --gold-light: #fbbf24;
+      --gold-dark: #b45309;
+      --gold-glow: rgba(245, 158, 11, 0.25);
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --border-color: #27272a;
+      --font-heading: 'Bebas Neue', Impact, sans-serif;
+      --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      --whatsapp-green: #25d366;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Tipografías */
+    h1, h2, h3, h4, .font-heading {
+      font-family: var(--font-heading);
+      letter-spacing: 0.05em;
+      font-weight: 400;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Efectos dorados */
+    .gold-text {
+      color: var(--gold-primary);
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold-light);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Botones */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-light));
+      color: #000;
+      box-shadow: 0 4px 15px var(--gold-glow);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-outline {
+      background: rgba(18, 18, 23, 0.8);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+    }
+
+    /* ==========================================================
+       1. HEADER FIJO
+       ========================================================== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(11, 11, 14, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+      padding: 0.75rem 0;
+      transition: all 0.3s;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-primary);
+      overflow: hidden;
+      background: #000;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-title {
+      font-size: 1.8rem;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .brand-subtitle {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold-primary);
+      display: block;
+    }
+
+    nav.desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav.desktop-nav a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    nav.desktop-nav a:hover {
+      color: var(--gold-primary);
+    }
+
+    /* ==========================================================
+       2. SECCIÓN HERO
+       ========================================================== */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 0 5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      filter: brightness(0.4);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg-main) 0%, rgba(11, 11, 14, 0.7) 60%, rgba(11, 11, 14, 0.4) 100%),
+                  linear-gradient(to right, rgba(11, 11, 14, 0.95) 0%, rgba(11, 11, 14, 0.5) 60%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 650px;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      margin: 1.25rem 0;
+      color: #fff;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: #d4d4d8;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* ==========================================================
+       3. SECCIÓN SERVICIOS
+       ========================================================== */
+    .section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .service-img {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .service-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .service-card:hover .service-img img {
+      transform: scale(1.05);
+    }
+
+    .service-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--gold-primary);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .service-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      gap: 1.25rem;
+    }
+
+    .service-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-name {
+      font-size: 1.6rem;
+      color: #fff;
+    }
+
+    .service-price {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+    }
+
+    .service-text {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================
+       4. SECCIÓN GALERÍA
+       ========================================================== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .gallery-card {
+      position: relative;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.25rem;
+      opacity: 0.9;
+    }
+
+    .gallery-cat {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .gallery-title {
+      font-size: 1.35rem;
+      color: #fff;
+    }
+
+    /* ==========================================================
+       5. SECCIÓN RESERVA TU HORA
+       ========================================================== */
+    .booking-wrapper {
+      max-width: 750px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #e4e4e7;
+    }
+
+    .form-label span {
+      color: var(--gold-primary);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+
+    .form-control.error {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+
+    .error-msg {
+      color: #f87171;
+      font-size: 0.75rem;
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    /* Selector visual de horas */
+    .time-slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+      gap: 0.5rem;
+      max-height: 180px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      background: #09090b;
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .time-slot-btn {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .time-slot-btn:hover {
+      color: #fff;
+      border-color: var(--gold-primary);
+    }
+
+    .time-slot-btn.active {
+      background: var(--gold-primary);
+      color: #000;
+      font-weight: 700;
+      border-color: var(--gold-primary);
+      box-shadow: 0 2px 8px var(--gold-glow);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1.1rem;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Mensaje de Confirmación Visual */
+    .confirmation-box {
+      display: none;
+      text-align: center;
+      padding: 2rem 1rem;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .confirmation-box.visible {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .confirmation-title {
+      color: #34d399;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .confirmation-text {
+      color: var(--text-main);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .whatsapp-direct-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.5rem;
+      background: var(--whatsapp-green);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      margin-top: 0.5rem;
+      transition: opacity 0.2s;
+    }
+
+    .whatsapp-direct-link:hover {
+      opacity: 0.9;
+    }
+
+    /* ==========================================================
+       6. FOOTER
+       ========================================================== */
+    footer {
+      background: #070709;
+      border-top: 1px solid var(--border-color);
+      padding: 4rem 0 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-whatsapp-link {
+      color: var(--whatsapp-green);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1c1c24;
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #71717a;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav.desktop-nav {
+        display: none;
+      }
+      .booking-wrapper {
+        padding: 1.5rem;
+      }
+      .hero-title {
+        font-size: 3.2rem;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================
+       1. HEADER FIJO CON LOGO Y BOTÓN RESERVAR
+       ========================================================== -->
+  <header>
+    <div class="container header-inner">
+      <a href="#hero" class="brand">
+        <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:#1A1A1A;border:1px solid rgba(212,175,55,0.4);border-radius:4px;color:#D4AF37;font-family:var(--font-heading);font-size:1.5rem;font-weight:bold;">
+          M
+        </div>
+        <div>
+          <span class="brand-title font-heading">Barbería Milo</span>
+          <span class="brand-subtitle">Estudio Profesional</span>
+        </div>
+      </a>
+
+      <nav class="desktop-nav">
+        <a href="#hero">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#galeria">Galería</a>
+        <a href="#reserva" class="btn btn-gold" style="padding: 0.5rem 1.25rem; font-size: 0.85rem;">Reservar</a>
+      </nav>
+
+      <!-- Botón móvil directo -->
+      <a href="#reserva" class="btn btn-gold" style="display: none; padding: 0.4rem 1rem; font-size: 0.8rem;" id="mobile-reserve-btn">
+        Reservar
+      </a>
+    </div>
+  </header>
+
+  <!-- ==========================================================
+       2. SECCIÓN HERO CON FOTO DEL BARBERO MILO DE FONDO
+       ========================================================== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" style="background: radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.15) 0%, #0D0D0D 70%);">
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="badge-gold">★ Experiencia & Estilo Personalizado</div>
+        <h1 class="hero-title">
+          PRECISIÓN, <br>
+          <span class="gold-gradient-text">ESTILO & CARÁCTER</span>
+        </h1>
+        <p class="hero-desc">
+          Degradados limpios, cortes clásicos y perfilado milimétrico de barba realizados por Milo. Un ambiente moderno y relajado pensado para ti.
+        </p>
+        <div class="hero-actions">
+          <a href="#reserva" class="btn btn-gold btn-submit" style="width: auto; margin: 0; padding: 0.9rem 2rem;">
+            Reservar mi hora
+          </a>
+          <a href="#servicios" class="btn btn-outline">
+            Ver servicios
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       3. SECCIÓN SERVICIOS CON TARJETAS Y PRECIOS EN CLP
+       ========================================================== -->
+  <section class="section" id="servicios" style="background: #0e0e13; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge-gold">Nuestras Tarifas</div>
+        <h2 class="section-title">SERVICIOS & <span class="gold-text">PRECIOS</span></h2>
+        <p class="section-desc">Cuidado integral con productos premium y asesoría personalizada de imagen.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Servicio 1 -->
+        <div class="service-card">
+          <div class="service-body">
+            <div>
+              <div class="service-info">
+                <h3 class="service-name">Corte clásico</h3>
+                <span class="service-price">$10.000 CLP</span>
+              </div>
+              <p class="service-text">Corte a tijera o máquina tradicional con lavado, perfilado de contornos y peinado final.</p>
+            </div>
+            <button class="btn btn-outline" style="width: 100%;" onclick="seleccionarServicio('Corte clásico')">Elegir y Reservar</button>
+          </div>
+        </div>
+
+        <!-- Servicio 2 -->
+        <div class="service-card">
+          <div class="service-body">
+            <div>
+              <div class="service-info">
+                <h3 class="service-name">Corte + Barba</h3>
+                <span class="service-price">$15.000 CLP</span>
+              </div>
+              <p class="service-text">El combo completo: corte desvanecido o clásico junto a perfilado y toalla caliente para barba.</p>
+            </div>
+            <button class="btn btn-outline" style="width: 100%;" onclick="seleccionarServicio('Corte + Barba')">Elegir y Reservar</button>
+          </div>
+        </div>
+
+        <!-- Servicio 3 -->
+        <div class="service-card">
+          <div class="service-body">
+            <div>
+              <div class="service-info">
+                <h3 class="service-name">Afeitado a navaja</h3>
+                <span class="service-price">$8.000 CLP</span>
+              </div>
+              <p class="service-text">Ritual clásico con espuma tibia, toalla caliente y navaja de precisión para máxima suavidad.</p>
+            </div>
+            <button class="btn btn-outline" style="width: 100%;" onclick="seleccionarServicio('Afeitado a navaja')">Elegir y Reservar</button>
+          </div>
+        </div>
+
+        <!-- Servicio 4 -->
+        <div class="service-card">
+          <div class="service-body">
+            <div>
+              <div class="service-info">
+                <h3 class="service-name">Diseño de barba</h3>
+                <span class="service-price">$7.000 CLP</span>
+              </div>
+              <p class="service-text">Definición geométrica de líneas, rebaje de volumen, contorno limpio e hidratación con aceites.</p>
+            </div>
+            <button class="btn btn-outline" style="width: 100%;" onclick="seleccionarServicio('Diseño de barba')">Elegir y Reservar</button>
+          </div>
+        </div>
+
+        <!-- Servicio 5 -->
+        <div class="service-card">
+          <div class="service-body">
+            <div>
+              <div class="service-info">
+                <h3 class="service-name">Corte niño</h3>
+                <span class="service-price">$8.000 CLP</span>
+              </div>
+              <p class="service-text">Paciencia, buena onda y estilos frescos adaptados para los más pequeños de la casa.</p>
+            </div>
+            <button class="btn btn-outline" style="width: 100%;" onclick="seleccionarServicio('Corte niño')">Elegir y Reservar</button>
+          </div>
+        </div>
+
+        <!-- Servicio 6 (Opcional - Estilo Milo) -->
+        <div class="service-card">
+          <div class="service-body">
+            <div>
+              <div class="service-info">
+                <h3 class="service-name">Diseño & Freestyle</h3>
+                <span class="service-price">$12.000 CLP</span>
+              </div>
+              <p class="service-text">Líneas a navaja, grecas geométricas y arte personalizado en nuca o laterales.</p>
+            </div>
+            <button class="btn btn-outline" style="width: 100%;" onclick="seleccionarServicio('Diseño & Freestyle')">Elegir y Reservar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       4. SECCIÓN GALERÍA DE TRABAJOS REALES
+       ========================================================== -->
+  <section class="section" id="galeria">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge-gold">Portafolio Auténtico</div>
+        <h2 class="section-title">GALERÍA DE <span class="gold-text">TRABAJOS REALES</span></h2>
+        <p class="section-desc">Cortes y degradados 100% auténticos realizados por Milo en Santiago. Sin filtros de IA.</p>
+      </div>
+
+      <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <!-- Foto 1 -->
+        <div style="background: #151518; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; position: relative;">
+          <img src="/images/corte-1.jpg" alt="Fade con doble línea lateral" style="width: 100%; height: 260px; object-fit: cover; display: block;" onerror="this.style.display='none'">
+          <div style="padding: 1rem;">
+            <span style="font-size: 0.7rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Degradados & Líneas</span>
+            <h4 style="color: #fff; font-size: 0.95rem; margin-top: 0.25rem;">Fade con doble línea lateral</h4>
+          </div>
+        </div>
+
+        <!-- Foto 2 -->
+        <div style="background: #151518; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; position: relative;">
+          <img src="/images/corte-2.jpg" alt="Diseño Freestyle en Nuca con Cruz" style="width: 100%; height: 260px; object-fit: cover; display: block;" onerror="this.style.display='none'">
+          <div style="padding: 1rem;">
+            <span style="font-size: 0.7rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Freestyle</span>
+            <h4 style="color: #fff; font-size: 0.95rem; margin-top: 0.25rem;">Diseño Freestyle en Nuca con Cruz</h4>
+          </div>
+        </div>
+
+        <!-- Foto 3 -->
+        <div style="background: #151518; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; position: relative;">
+          <img src="/images/milo.jpg" alt="Milo Barbero" style="width: 100%; height: 260px; object-fit: cover; object-position: top; display: block;" onerror="this.style.display='none'">
+          <div style="padding: 1rem;">
+            <span style="font-size: 0.7rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Barbero Titular</span>
+            <h4 style="color: #fff; font-size: 0.95rem; margin-top: 0.25rem;">Milo Barbero en Estudio</h4>
+          </div>
+        </div>
+
+        <!-- Foto 4 -->
+        <div style="background: #151518; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; position: relative;">
+          <img src="/images/logo.jpg" alt="Logo Miloxito" style="width: 100%; height: 260px; object-fit: cover; display: block;" onerror="this.style.display='none'">
+          <div style="padding: 1rem;">
+            <span style="font-size: 0.7rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; font-weight: bold;">Identidad de Marca</span>
+            <h4 style="color: #fff; font-size: 0.95rem; margin-top: 0.25rem;">Miloxito Barbería Oficial</h4>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="https://www.instagram.com/miloxito.barber/" target="_blank" class="btn btn-outline" style="margin-right: 0.75rem;">
+          Ver más en @miloxito.barber
+        </a>
+        <a href="#reserva" class="btn btn-gold" style="display: inline-block;">Agendar Cita con Milo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       5. SECCIÓN RESERVA TU HORA (FORMULARIO CON WHATSAPP)
+       ========================================================== -->
+  <section class="section" id="reserva" style="background: #09090c; border-top: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge-gold">Agendamiento Inmediato</div>
+        <h2 class="section-title">RESERVA <span class="gold-text">TU HORA</span></h2>
+        <p class="section-desc">Selecciona tu día y horario disponible. Tu reserva se coordinará al instante por WhatsApp con Milo.</p>
+      </div>
+
+      <div class="booking-wrapper">
+        <form id="booking-form" onsubmit="handleReserva(event)" novalidate>
+          <!-- Campo 1: Nombre completo -->
+          <div class="form-group">
+            <label class="form-label" for="nombre">Nombre completo <span>*</span></label>
+            <input type="text" id="nombre" class="form-control" placeholder="Ej: Francisco Álvarez" required>
+            <div id="error-nombre" class="error-msg">Por favor ingresa tu nombre completo.</div>
+          </div>
+
+          <!-- Campo 2: Servicio deseado -->
+          <div class="form-group">
+            <label class="form-label" for="servicio">Servicio deseado <span>*</span></label>
+            <select id="servicio" class="form-control" required>
+              <option value="" disabled selected>-- Elige un servicio --</option>
+              <option value="Corte clásico">Corte clásico ($10.000 CLP)</option>
+              <option value="Corte + Barba">Corte + Barba ($15.000 CLP)</option>
+              <option value="Afeitado a navaja">Afeitado a navaja ($8.000 CLP)</option>
+              <option value="Diseño de barba">Diseño de barba ($7.000 CLP)</option>
+              <option value="Corte niño">Corte niño ($8.000 CLP)</option>
+              <option value="Diseño & Freestyle">Diseño & Freestyle ($12.000 CLP)</option>
+            </select>
+            <div id="error-servicio" class="error-msg">Por favor selecciona el servicio que deseas.</div>
+          </div>
+
+          <!-- Campo 3: Fecha (no permite fechas pasadas) -->
+          <div class="form-group">
+            <label class="form-label" for="fecha">Fecha <span>*</span></label>
+            <input type="date" id="fecha" class="form-control" required>
+            <div id="error-fecha" class="error-msg">Por favor elige una fecha válida (a partir de hoy).</div>
+          </div>
+
+          <!-- Campo 4: Hora (bloques de 30 min de 10:00 a 20:00) -->
+          <div class="form-group">
+            <label class="form-label">Hora disponible (bloques de 30 min) <span>*</span></label>
+            <!-- Input oculto para guardar la hora seleccionada -->
+            <input type="hidden" id="hora" required>
+            
+            <!-- Selector visual de botones de hora -->
+            <div class="time-slots-grid" id="slots-container">
+              <!-- Se generan dinámicamente con JS -->
+            </div>
+            <div id="error-hora" class="error-msg">Por favor selecciona un horario disponible.</div>
+          </div>
+
+          <!-- Botón grande Confirmar reserva -->
+          <button type="submit" class="btn btn-gold btn-submit" id="btn-confirmar">
+            Confirmar reserva
+          </button>
+        </form>
+
+        <!-- Mensaje de confirmación visual -->
+        <div id="confirmacion-box" class="confirmation-box">
+          <div class="confirmation-title">¡Listo! Te estamos redirigiendo a WhatsApp</div>
+          <p class="confirmation-text">
+            Se abrirá tu conversación con <strong>Milo</strong> para confirmar tu turno. Si no abrió automáticamente, haz clic abajo:
+          </p>
+          <a href="#" id="link-whatsapp-manual" target="_blank" class="whatsapp-direct-link">
+            Abrir chat de WhatsApp con Milo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       6. FOOTER CON WHATSAPP Y REDES SOCIALES
+       ========================================================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div style="max-width: 400px;">
+          <h3 class="brand-title font-heading" style="color: #fff; margin-bottom: 0.5rem;">Barbería Milo</h3>
+          <p style="margin-bottom: 1rem; line-height: 1.5;">
+            Estudio de barbería moderna en Chile. Calidad, estilo y dedicación en cada detalle.
+          </p>
+          <p>
+            WhatsApp directo: 
+            <a href="https://wa.me/56977560843" target="_blank" class="footer-whatsapp-link">
+              +56 9 7756 0843
+            </a>
+          </p>
+        </div>
+
+        <div>
+          <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;">Horario de Atención</h4>
+          <p>Lunes a Sábado: 10:00 a 20:00 hrs</p>
+          <p>Domingos: Cerrado</p>
+        </div>
+
+        <div>
+          <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;">Síguenos en Instagram</h4>
+          <p style="margin-bottom: 0.4rem;">
+            Barbería: <a href="https://www.instagram.com/miloxito.barber/" target="_blank" style="color: var(--gold-light); font-weight: 600;">@miloxito.barber</a>
+          </p>
+          <p style="margin-bottom: 0.4rem;">
+            Milo Personal: <a href="https://www.instagram.com/kz.miloo/" target="_blank" style="color: var(--gold-light); font-weight: 600;">@kz.miloo</a>
+          </p>
+          <p style="margin-top: 0.5rem;"><a href="#reserva" style="color: var(--gold-primary); text-decoration: underline;">Reservar cita online</a></p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; Barbería Milo. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       JAVASCRIPT: LÓGICA DE VALIDACIÓN, SELECTOR Y WHATSAPP
+       ========================================================== -->
+  <script>
+    // Generar horas entre 10:00 y 20:00 en intervalos de 30 min
+    const horarios = [
+      '10:00', '10:30', '11:00', '11:30',
+      '12:00', '12:30', '13:00', '13:30',
+      '14:00', '14:30', '15:00', '15:30',
+      '16:00', '16:30', '17:00', '17:30',
+      '18:00', '18:30', '19:00', '19:30',
+      '20:00'
+    ];
+
+    const slotsContainer = document.getElementById('slots-container');
+    const inputHora = document.getElementById('hora');
+    const inputFecha = document.getElementById('fecha');
+
+    // Configurar fecha mínima para NO permitir fechas pasadas
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    const minFecha = yyyy + '-' + mm + '-' + dd;
+    inputFecha.min = minFecha;
+
+    // Renderizar botones de hora
+    horarios.forEach(slot => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'time-slot-btn';
+      btn.textContent = slot;
+      btn.onclick = function() {
+        // Remover clase activa de todos
+        document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('active'));
+        // Marcar este botón como activo
+        btn.classList.add('active');
+        inputHora.value = slot;
+        document.getElementById('error-hora').classList.remove('visible');
+      };
+      slotsContainer.appendChild(btn);
+    });
+
+    // Función para seleccionar servicio desde las tarjetas
+    function seleccionarServicio(nombreServicio) {
+      const select = document.getElementById('servicio');
+      select.value = nombreServicio;
+      document.getElementById('reserva').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Manejar envío de formulario y validación (sin alert)
+    function handleReserva(event) {
+      event.preventDefault();
+
+      const inputNombre = document.getElementById('nombre');
+      const inputServicio = document.getElementById('servicio');
+      const errorNombre = document.getElementById('error-nombre');
+      const errorServicio = document.getElementById('error-servicio');
+      const errorFecha = document.getElementById('error-fecha');
+      const errorHora = document.getElementById('error-hora');
+
+      let isValid = true;
+
+      // Resetear estados de error
+      [inputNombre, inputServicio, inputFecha].forEach(el => el.classList.remove('error'));
+      [errorNombre, errorServicio, errorFecha, errorHora].forEach(el => el.classList.remove('visible'));
+
+      // Validar Nombre
+      const nombreVal = inputNombre.value.trim();
+      if (!nombreVal || nombreVal.length < 2) {
+        inputNombre.classList.add('error');
+        errorNombre.classList.add('visible');
+        isValid = false;
+      }
+
+      // Validar Servicio
+      const servicioVal = inputServicio.value;
+      if (!servicioVal) {
+        inputServicio.classList.add('error');
+        errorServicio.classList.add('visible');
+        isValid = false;
+      }
+
+      // Validar Fecha
+      const fechaVal = inputFecha.value;
+      if (!fechaVal || fechaVal < minFecha) {
+        inputFecha.classList.add('error');
+        errorFecha.classList.add('visible');
+        isValid = false;
+      }
+
+      // Validar Hora
+      const horaVal = inputHora.value;
+      if (!horaVal) {
+        errorHora.classList.add('visible');
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Formatear fecha para el mensaje (DD/MM/YYYY)
+      const partesFecha = fechaVal.split('-');
+      const fechaFormateada = partesFecha[2] + '/' + partesFecha[1] + '/' + partesFecha[0];
+
+      // Formato exacto requerido:
+      // "Hola Barbero Milo mi nombre es {nombre} y quiero {servicio} voy a llegar el {fecha} a las {hora} hs. Ahí estaré."
+      const mensaje = "Hola Barbero Milo mi nombre es " + nombreVal + " y quiero " + servicioVal + " voy a llegar el " + fechaFormateada + " a las " + horaVal + " hs. Ahí estaré.";
+      const mensajeCodificado = encodeURIComponent(mensaje);
+      const urlWhatsapp = "https://wa.me/56977560843?text=" + mensajeCodificado;
+
+      // Mostrar confirmación visual en la página
+      const confirmBox = document.getElementById('confirmacion-box');
+      const linkManual = document.getElementById('link-whatsapp-manual');
+      linkManual.href = urlWhatsapp;
+      confirmBox.classList.add('visible');
+
+      // Abrir en nueva pestaña la URL de WhatsApp
+      window.open(urlWhatsapp, '_blank');
+    }
+  </script>
+</body>
+</html>
+`;

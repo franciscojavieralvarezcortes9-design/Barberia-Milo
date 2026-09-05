@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --gold: #D4AF37;
+    --amber: #FFBF00;
+    --bg: #0D0D0D;
+    --surface: #1A1A1A;
+    --surface-hover: #222222;
+    --text: #F2F2F2;
+    --muted: #888888;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+    background-color: var(--bg);
+  }
+  
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+  }
+
+  h1, h2, h3, .font-heading, .font-display {
+    font-family: 'Bebas Neue', 'Helvetica Neue', Impact, sans-serif;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+}
+
+/* Custom Sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Sleek Interface Utilities */
+.gold-gradient {
+  background: linear-gradient(135deg, #D4AF37, #FFBF00);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #D4AF37 0%, #FFBF00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold {
+  color: #FFBF00;
+}
+
+.border-gold {
+  border-color: #D4AF37;
+}
+
+.font-display {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.service-card-sleek {
+  background: #1A1A1A;
+  border-left: 3px solid #FFBF00;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service-card-sleek:hover {
+  background: #202020;
+  border-left-color: #D4AF37;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+}
+
+.sleek-input {
+  background-color: #1A1A1A;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #F2F2F2;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sleek-input:focus {
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 1px #D4AF37;
+  outline: none;
+}
