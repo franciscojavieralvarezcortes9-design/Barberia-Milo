@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
@@ -8,17 +8,25 @@ import { BookingSection } from './components/BookingSection';
 import { Footer } from './components/Footer';
 import { StandaloneModal } from './components/StandaloneModal';
 import { PhotoUploaderModal } from './components/PhotoUploaderModal';
+import { AdminModal } from './components/AdminModal';
 import { MessageCircle, Calendar } from 'lucide-react';
 import { WHATSAPP_PHONE } from './data';
 import { useRealImages } from './imageStore';
+import { recordSiteVisit } from './adminStore';
 import { GalleryItem } from './types';
 
 export default function App() {
   const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [isPhotoUploaderOpen, setIsPhotoUploaderOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [photoUploaderTab, setPhotoUploaderTab] = useState<'milo' | 'logo' | 'gallery'>('gallery');
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
+
+  // Track site visits automatically
+  useEffect(() => {
+    recordSiteVisit();
+  }, []);
 
   const {
     miloPhoto,
@@ -66,6 +74,7 @@ export default function App() {
         onOpenCodeModal={() => setIsCodeModalOpen(true)}
         logoPhoto={logoPhoto}
         onOpenPhotoUploader={handleOpenPhotoUploader}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* Main Sections */}
@@ -148,6 +157,12 @@ export default function App() {
         }}
         defaultTab={photoUploaderTab}
         initialEditingItem={editingItem}
+      />
+
+      {/* Secret Admin Analytics & Bookings Dashboard */}
+      <AdminModal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
       />
     </div>
   );

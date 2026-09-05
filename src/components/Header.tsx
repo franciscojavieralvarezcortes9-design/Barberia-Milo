@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Phone, Menu, X, Instagram } from 'lucide-react';
+import { Calendar, Phone, Menu, X, Instagram, ShieldCheck } from 'lucide-react';
 import {
   SHOP_NAME,
   WHATSAPP_DISPLAY,
@@ -13,12 +13,14 @@ interface HeaderProps {
   onOpenCodeModal: () => void;
   logoPhoto?: string | null;
   onOpenPhotoUploader?: (tab?: 'milo' | 'logo' | 'gallery') => void;
+  onOpenAdmin?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onOpenCodeModal,
   logoPhoto,
   onOpenPhotoUploader,
+  onOpenAdmin,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -148,10 +150,35 @@ export const Header: React.FC<HeaderProps> = ({
             <Calendar className="w-3.5 h-3.5" />
             <span>Reservar Ahora</span>
           </button>
+
+          {/* Admin Panel Access Button */}
+          {onOpenAdmin && (
+            <button
+              id="header-admin-btn"
+              type="button"
+              onClick={onOpenAdmin}
+              title="Panel de Administración Milo"
+              className="px-3 py-2 rounded-full text-[#888888] hover:text-[#FFBF00] bg-[#161616] hover:bg-[#222222] border border-white/10 hover:border-[#D4AF37]/50 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FFBF00]" />
+              <span className="hidden xl:inline">Admin</span>
+            </button>
+          )}
         </div>
 
         {/* Mobile menu trigger */}
         <div className="flex items-center space-x-2 sm:hidden">
+          {onOpenAdmin && (
+            <button
+              id="header-admin-mobile-direct"
+              type="button"
+              onClick={onOpenAdmin}
+              className="p-1.5 rounded-full text-[#FFBF00] bg-[#161616] border border-[#D4AF37]/40"
+              title="Panel de Administración"
+            >
+              <ShieldCheck className="w-4 h-4" />
+            </button>
+          )}
           <button
             id="header-reservar-mobile-direct"
             onClick={() => scrollToSection('reserva')}
@@ -209,6 +236,20 @@ export const Header: React.FC<HeaderProps> = ({
               <Calendar className="w-4 h-4" />
               <span>Reservar Ahora</span>
             </button>
+
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAdmin();
+                }}
+                className="w-full py-2.5 text-xs text-gold bg-[#1A1A1A] hover:bg-[#222] border border-gold/30 rounded-sm flex items-center justify-center gap-2 font-bold uppercase tracking-wider"
+              >
+                <ShieldCheck className="w-4 h-4 text-gold" />
+                <span>Panel de Administrador</span>
+              </button>
+            )}
 
             <a
               href={INSTAGRAM_SHOP_URL}

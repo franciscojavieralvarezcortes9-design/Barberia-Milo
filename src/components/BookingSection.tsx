@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Scissors, MessageCircle, AlertCircle, CheckCircle, ExternalLink, RefreshCw, MapPin } from 'lucide-react';
+import { Calendar, Clock, User, Scissors, MessageCircle, AlertCircle, CheckCircle, ExternalLink, RefreshCw, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 import { BARBER_SERVICES, TIME_SLOTS, WHATSAPP_PHONE, WHATSAPP_DISPLAY } from '../data';
 import { FormErrors, ReservationFormData } from '../types';
+import { GoogleCalendarSync } from './GoogleCalendarSync';
+import { recordNewBooking } from '../adminStore';
 
 interface BookingSectionProps {
   selectedServicePreload?: string;
@@ -19,6 +21,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ selectedServiceP
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedUrl, setSubmittedUrl] = useState('');
   const [submittedMessage, setSubmittedMessage] = useState('');
+  const [showCalendarPanel, setShowCalendarPanel] = useState(false);
 
   // Sync when user selects a service from cards
   useEffect(() => {
@@ -94,6 +97,18 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ selectedServiceP
     setSubmittedUrl(whatsappUrl);
     setIsSubmitted(true);
 
+    // Record in Admin Dashboard database
+    try {
+      recordNewBooking({
+        clientName: formData.fullName,
+        service: formData.service,
+        date: formData.date,
+        time: formData.time,
+      });
+    } catch (err) {
+      console.error('Error recording booking to adminStore:', err);
+    }
+
     try {
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     } catch {
@@ -153,56 +168,109 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ selectedServiceP
                 <div className="text-xs text-[#F2F2F2]">Lunes a Sábado: 10:00 a 20:00 hrs</div>
               </div>
             </div>
+
+            {/* Google Calendar Quick Status / Toggle */}
+            <div className="mt-4 p-4 rounded-sm bg-[#161616] border border-white/10 space-y-3">
+              <button
+                type="button"
+                onClick={() => setShowCalendarPanel(!showCalendarPanel)}
+                className="w-full flex items-center justify-between text-left cursor-pointer group"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-sm bg-white p-0.5 flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 48 48" className="w-4 h-4">
+                      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-white group-hover:text-gold transition-colors block">
+                      Google Calendar
+                    </span>
+                    <span className="text-[10px] text-[#888888]">
+                      Sincronizar citas y recordatorios
+                    </span>
+                  </div>
+                </div>
+                {showCalendarPanel ? (
+                  <ChevronUp className="w-4 h-4 text-gold" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-[#888888] group-hover:text-white transition-colors" />
+                )}
+              </button>
+
+              {showCalendarPanel && (
+                <div className="pt-2 border-t border-white/5 animate-in fade-in duration-200">
+                  <GoogleCalendarSync />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right Column: Form / Success state */}
           <div className="lg:col-span-8 bg-[#1A1A1A]/90 border border-white/10 rounded-sm p-6 sm:p-8 shadow-2xl">
             {isSubmitted ? (
-              <div id="booking-confirmation-banner" className="py-6 text-center space-y-6">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
-                  <CheckCircle className="w-8 h-8" />
+              <div id="booking-confirmation-banner" className="py-4 space-y-6">
+                <div className="text-center space-y-3">
+                  <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
+                    <CheckCircle className="w-7 h-7" />
+                  </div>
+
+                  <div className="space-y-1">
+                    <h4 className="font-display text-2xl text-[#F2F2F2] uppercase tracking-wide">
+                      ¡Reserva Solicitada con Éxito!
+                    </h4>
+                    <p className="text-xs text-[#888888] max-w-md mx-auto">
+                      Se preparó el mensaje oficial para coordinar directamente por WhatsApp con <strong className="text-gold">Milo</strong>.
+                    </p>
+                  </div>
+
+                  {/* Message preview */}
+                  <div className="p-3.5 rounded-sm bg-black/60 border border-white/10 text-left max-w-lg mx-auto">
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-[#888888] block mb-1">
+                      Mensaje de WhatsApp:
+                    </span>
+                    <p className="text-xs text-amber-200/90 font-mono italic">
+                      &ldquo;{submittedMessage}&rdquo;
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+                    <a
+                      id="btn-whatsapp-redirect-manual"
+                      href={submittedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-6 py-3 rounded-sm bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-md"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-white" />
+                      <span>Abrir Chat de WhatsApp</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+
+                    <button
+                      id="btn-new-reservation"
+                      onClick={handleReset}
+                      className="w-full sm:w-auto px-5 py-3 rounded-sm bg-neutral-800 hover:bg-neutral-700 text-[#F2F2F2] text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer border border-white/5"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Nueva Reserva</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <h4 className="font-display text-2xl text-[#F2F2F2] uppercase tracking-wide">
-                    ¡Listo! Te estamos redirigiendo a WhatsApp
-                  </h4>
-                  <p className="text-xs text-[#888888] max-w-md mx-auto">
-                    Se abrirá la conversación con <strong className="text-gold">Milo</strong> para confirmar tu turno. Si no abrió automáticamente, haz clic abajo:
-                  </p>
-                </div>
-
-                {/* Message preview */}
-                <div className="p-3.5 rounded-sm bg-black/60 border border-white/10 text-left max-w-lg mx-auto">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-[#888888] block mb-1">
-                    Mensaje generado:
-                  </span>
-                  <p className="text-xs text-amber-200/90 font-mono italic">
-                    &ldquo;{submittedMessage}&rdquo;
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                  <a
-                    id="btn-whatsapp-redirect-manual"
-                    href={submittedUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-sm bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all shadow-md"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-white" />
-                    <span>Abrir Chat de WhatsApp</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-
-                  <button
-                    id="btn-new-reservation"
-                    onClick={handleReset}
-                    className="w-full sm:w-auto px-5 py-3.5 rounded-sm bg-neutral-800 hover:bg-neutral-700 text-[#F2F2F2] text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer border border-white/5"
-                  >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Nueva Reserva</span>
-                  </button>
+                {/* Google Calendar Interactive Sync Block */}
+                <div className="pt-4 border-t border-white/10 text-left">
+                  <GoogleCalendarSync
+                    bookingData={{
+                      fullName: formData.fullName,
+                      service: formData.service,
+                      date: formData.date,
+                      time: formData.time,
+                    }}
+                  />
                 </div>
               </div>
             ) : (
